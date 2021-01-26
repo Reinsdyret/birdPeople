@@ -52,7 +52,7 @@ birds.push(new Bird(0,0,1,1,"larsScaled"));
 
 
 const cycleLoop = [0,1,2,3,2,1,0];
-const scale = 2;
+const scale = 2; 
 let cycleIndex = 0;
 let frameCount = 0;
 function step(){
