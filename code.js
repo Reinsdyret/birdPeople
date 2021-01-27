@@ -47,41 +47,38 @@ let ctx = canvas.getContext("2d");
 canvas.style.border = "1px solid black";
 
 let birds = [];
-birds.push(new Bird(0,0,1,1,"larsScaled"));
+birds.push(new Bird(0,0,1,1,"lars"));
 
 
 
 const cycleLoop = [0,1,2,3,2,1,0];
 const scale = 2;
 let frameIndex = 0;
-let frameCount = 0;
-let startTime, deltaTime;
+let startTime;
+let deltaTime = 0;
+let cycleGoingDown = false;
 function step(frameIndex){
-    frameCount++;
-
-    if(frameCount < 2.5){
-        window.requestAnimationFrame(step);
-        return;
-    }
-    frameCount = 0;
-
     ctx.clearRect(0,0,canvas.width,canvas.height);
     for(let i = 0; i<birds.length; i++){
-        birds[i].drawFrame(ctx,scale,cycleLoop[cycleIndex],0,0,0);
-    }
-    cycleIndex++;
-
-    if(cycleIndex >= cycleLoop.length){
-        cycleIndex = 0;
+        birds[i].drawFrame(ctx,scale,cycleLoop[frameIndex],0,0,0);
     }
 }
 
 function loop(){
-    deltaTime = startTime - new Date().getTime() / 1000;
-    frameIndex += deltaTime;
-    if(Math.floor(frameIndex >3))
+    deltaTime = (new Date().getTime() / 1000) - startTime ;
+    if(Math.floor(frameIndex) > 3){
+        cycleGoingDown = true;
+    }
+    if(cycleGoingDown){
+        deltaTime *= -1;
+    }
+    frameIndex += deltaTime * 15;
     step(Math.floor(frameIndex));
 
+    if(Math.floor(frameIndex) <= 0){
+        cycleGoingDown = false;
+    }
+    startTime = new Date().getTime() / 1000;
     window.requestAnimationFrame(loop);
 }
 
