@@ -57,6 +57,7 @@ let frameIndex = 0;
 let startTime;
 let deltaTime = 0;
 let cycleGoingDown = false;
+let framesPerSecond = 15;
 function step(frameIndex){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     for(let i = 0; i<birds.length; i++){
@@ -72,7 +73,7 @@ function loop(){
     if(cycleGoingDown){
         deltaTime *= -1;
     }
-    frameIndex += deltaTime * 15;
+    frameIndex += deltaTime * framesPerSecond;
     step(Math.floor(frameIndex));
 
     if(Math.floor(frameIndex) <= 0){
