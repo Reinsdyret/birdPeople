@@ -52,10 +52,11 @@ birds.push(new Bird(0,0,1,1,"larsScaled"));
 
 
 const cycleLoop = [0,1,2,3,2,1,0];
-const scale = 2; 
-let cycleIndex = 0;
+const scale = 2;
+let frameIndex = 0;
 let frameCount = 0;
-function step(){
+let startTime, deltaTime;
+function step(frameIndex){
     frameCount++;
 
     if(frameCount < 2.5){
@@ -73,10 +74,18 @@ function step(){
     if(cycleIndex >= cycleLoop.length){
         cycleIndex = 0;
     }
+}
 
-    window.requestAnimationFrame(step);
+function loop(){
+    deltaTime = startTime - new Date().getTime() / 1000;
+    frameIndex += deltaTime;
+    if(Math.floor(frameIndex >3))
+    step(Math.floor(frameIndex));
+
+    window.requestAnimationFrame(loop);
 }
 
 function init(){
-    window.requestAnimationFrame(step);
+    startTime = new Date().getTime() / 1000;
+    window.requestAnimationFrame(loop);
 }
