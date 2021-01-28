@@ -40,8 +40,10 @@ class Bird{
             ctx.drawImage(this.img,frameX * this.width, frameY * this.height, this.width, this.height, canvasX, canvasY, this.width * scale, this.height * scale);
         }else{
             console.log(mirrored);
+            ctx.save();
             ctx.transform(-1,0,0,1,0,0);
             ctx.drawImage(this.img,frameX * this.width, frameY * this.height, this.width, this.height, canvasX + (this.width * scale), canvasY, this.width * scale , this.height * scale);
+            ctx.restore();
         }
         
     }
@@ -56,7 +58,7 @@ let ctx = canvas.getContext("2d");
 canvas.style.border = "1px solid black";
 
 let birds = [];
-birds.push(new Bird(0,0,1,1,"lars"));
+birds.push(new Bird(0,0,1,1,"haakon"));
 
 
 
