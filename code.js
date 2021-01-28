@@ -36,7 +36,16 @@ class Bird{
     }
 
     drawFrame(ctx,scale,frameX, frameY, canvasX, canvasY, mirrored){
-        ctx.drawImage(this.img,frameX * this.width, frameY * this.height, this.width, this.height, canvasX, canvasY, this.width * scale, this.height * scale);
+        if(!mirrored){
+            ctx.drawImage(this.img,frameX * this.width, frameY * this.height, this.width, this.height, canvasX, canvasY, this.width * scale, this.height * scale);
+        }else{
+            console.log(mirrored);
+            ctx.save();
+            ctx.transform(-1,0,0,1,0,0);
+            ctx.drawImage(this.img,frameX * this.width, frameY * this.height, this.width, this.height, canvasX + (this.width * scale), canvasY, this.width * scale , this.height * scale);
+            ctx.restore();
+        }
+        
     }
 
     //mirror()
@@ -49,7 +58,7 @@ let ctx = canvas.getContext("2d");
 canvas.style.border = "1px solid black";
 
 let birds = [];
-birds.push(new Bird(0,0,1,1,"lars"));
+birds.push(new Bird(0,0,1,1,"haakon"));
 
 
 
@@ -59,11 +68,12 @@ let frameIndex = 0;
 let startTime;
 let deltaTime = 0;
 let cycleGoingDown = false;
-let framesPerSecond = 15;
-function step(frameIndex){
+let framesPerSecond = 10;
+let mirror = true;
+function step(frameIndex, mirrored){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     for(let i = 0; i<birds.length; i++){
-        birds[i].drawFrame(ctx,scale,cycleLoop[frameIndex],2,0,0);
+        birds[i].drawFrame(ctx,scale,cycleLoop[frameIndex],2,0,0,mirrored);
     }
 }
 
@@ -77,7 +87,7 @@ function loop(){
     }
     frameIndex += deltaTime * framesPerSecond;
     ctx.scale(1,-1);
-    step(Math.floor(frameIndex));
+    step(Math.floor(frameIndex),mirror);
     
 
     if(Math.floor(frameIndex) <= 0){
