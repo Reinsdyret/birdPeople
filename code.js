@@ -35,9 +35,11 @@ class Bird{
         }
     }
 
-    drawFrame(ctx,scale,frameX, frameY, canvasX, canvasY){
+    drawFrame(ctx,scale,frameX, frameY, canvasX, canvasY, mirrored){
         ctx.drawImage(this.img,frameX * this.width, frameY * this.height, this.width, this.height, canvasX, canvasY, this.width * scale, this.height * scale);
     }
+
+    //mirror()
 
 
 }
@@ -61,7 +63,7 @@ let framesPerSecond = 15;
 function step(frameIndex){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     for(let i = 0; i<birds.length; i++){
-        birds[i].drawFrame(ctx,scale,cycleLoop[frameIndex],0,0,0);
+        birds[i].drawFrame(ctx,scale,cycleLoop[frameIndex],2,0,0);
     }
 }
 
@@ -74,7 +76,9 @@ function loop(){
         deltaTime *= -1;
     }
     frameIndex += deltaTime * framesPerSecond;
+    ctx.scale(1,-1);
     step(Math.floor(frameIndex));
+    
 
     if(Math.floor(frameIndex) <= 0){
         cycleGoingDown = false;
