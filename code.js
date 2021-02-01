@@ -42,7 +42,6 @@ class Bird{
         if(!this.mirrored){
             ctx.drawImage(this.img,frameX * this.width, frameY * this.height, this.width, this.height, canvasX, canvasY, this.width * scale, this.height * scale);
         }else{
-            console.log(mirrored);
             ctx.save();
             ctx.transform(-1,0,0,1,0,0);
             ctx.drawImage(this.img,
@@ -73,10 +72,10 @@ let startTime;
 let deltaTime = 0;
 let cycleGoingDown = false;
 let framesPerSecond = 10;
-function step(frameIndex, mirrored){
+function step(frameIndex){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     for(let i = 0; i<birds.length; i++){
-        birds[i].drawFrame(ctx,scale,cycleLoop[frameIndex],2,0,0,mirrored);
+        birds[i].drawFrame(ctx,scale,cycleLoop[frameIndex],2,0,0);
     }
 }
 
@@ -90,7 +89,7 @@ function loop(){
     }
     frameIndex += deltaTime * framesPerSecond;
     ctx.scale(1,-1);
-    step(Math.floor(frameIndex),mirror);
+    step(Math.floor(frameIndex));
     
 
     if(Math.floor(frameIndex) <= 0){
@@ -98,6 +97,8 @@ function loop(){
     }
     startTime = new Date().getTime() / 1000;
     window.requestAnimationFrame(loop);
+
+    birds[0].x += 1;
 }
 
 function init(){
