@@ -6,6 +6,7 @@ class Bird{
     direction;
     spritesheet;
     img;
+    mirrored = false;
     constructor(x,y,xDirection,yDirection,spritesheet){
         this.x = x;
         this.y = y; 
@@ -32,23 +33,26 @@ class Bird{
         }
         if(this.x + this.width >= canvas.width || this.x <= 0){
             this.direction.x *= -1;
+            //Sets mirrored to opposite value of current (flips)
+            this.mirrored = !this.mirrored;
         }
     }
 
-    drawFrame(ctx,scale,frameX, frameY, canvasX, canvasY, mirrored){
-        if(!mirrored){
+    drawFrame(ctx,scale,frameX, frameY, canvasX, canvasY){
+        if(!this.mirrored){
             ctx.drawImage(this.img,frameX * this.width, frameY * this.height, this.width, this.height, canvasX, canvasY, this.width * scale, this.height * scale);
         }else{
             console.log(mirrored);
             ctx.save();
             ctx.transform(-1,0,0,1,0,0);
-            ctx.drawImage(this.img,frameX * this.width, frameY * this.height, this.width, this.height, canvasX + (this.width * scale), canvasY, this.width * scale , this.height * scale);
+            ctx.drawImage(this.img,
+                frameX * this.width, frameY * this.height, this.width,this.height,
+                this.x, this.y, this.width * scale * -1, this.height * scale);
             ctx.restore();
         }
         
     }
 
-    //mirror()
 
 
 }
@@ -58,7 +62,7 @@ let ctx = canvas.getContext("2d");
 canvas.style.border = "1px solid black";
 
 let birds = [];
-birds.push(new Bird(0,0,1,1,"haakon"));
+birds.push(new Bird(0,0,1,1,"lars"));
 
 
 
@@ -69,7 +73,6 @@ let startTime;
 let deltaTime = 0;
 let cycleGoingDown = false;
 let framesPerSecond = 10;
-let mirror = true;
 function step(frameIndex, mirrored){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     for(let i = 0; i<birds.length; i++){
